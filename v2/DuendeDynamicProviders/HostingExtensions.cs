@@ -28,6 +28,11 @@ internal static class HostingExtensions
         isBuilder.AddInMemoryApiScopes(Config.ApiScopes);
         isBuilder.AddInMemoryClients(Config.Clients);
 
+        // Generic in memory identity provider store that supports both OIDC and Saml2.
+        isBuilder.AddInMemoryIdentityProviders(Config.IdentityProviders);
+       
+        // Saml2 Dynamic provider protocol support. OIDC support is already built in.
+        isBuilder.AddSaml2DynamicProvider();
 
         // if you want to use server-side sessions: https://blog.duendesoftware.com/posts/20220406_session_management/
         // then enable it

@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
+using DuendeDynamicProviders.DynamicProviderUtils;
 
 namespace DuendeDynamicProviders;
 
@@ -48,5 +49,18 @@ public static class Config
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "scope2" }
             },
+        };
+
+    public static IEnumerable<IdentityProvider> IdentityProviders =>
+        new IdentityProvider[]
+        {
+            new Saml2IdentityProvider()
+            {
+                DisplayName = "Saml2 StubIdp",
+                Scheme = "StubIdp",
+
+                SPEntityId = "https://localhost:5001/federation/StubIdp/",
+                IdpEntityId = "https://stubidp.sustainsys.com/Metadata"
+            }
         };
 }
