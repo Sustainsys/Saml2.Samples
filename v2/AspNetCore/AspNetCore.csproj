@@ -6,4 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Sustainsys.Saml2.AspNetCore2" Version="2.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Sustainsys.Saml2.Tests.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
