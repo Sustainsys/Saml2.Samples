@@ -17,26 +17,26 @@ builder.Services.AddAuthentication(opt =>
     // If there's a challenge to sign in, use the Saml2 scheme.
     opt.DefaultChallengeScheme = Saml2Defaults.Scheme;
 })
-    .AddCookie()
-    .AddSaml2(opt =>
+.AddCookie()
+.AddSaml2(opt =>
+{
+    // Set up our EntityId, this is our application.
+    opt.SPOptions.EntityId = new EntityId("https://localhost:7196/Saml2");
+
+    // Single logout messages should be signed according to the SAML2 standard, so we need
+    // to add a certificate for our app to sign logout messages with to enable logout functionality.
+    opt.SPOptions.ServiceCertificates.Add(new X509Certificate2("Sustainsys.Saml2.Tests.pfx"));
+
+    // Add an identity provider.
+    opt.IdentityProviders.Add(new IdentityProvider(
+        // The identityprovider's entity id.
+        new EntityId("https://stubidp.sustainsys.com/Metadata"),
+        opt.SPOptions)
     {
-        // Set up our EntityId, this is our application.
-        opt.SPOptions.EntityId = new EntityId("https://localhost:7196/Saml2");
-
-        // Single logout messages should be signed according to the SAML2 standard, so we need
-        // to add a certificate for our app to sign logout messages with to enable logout functionality.
-        opt.SPOptions.ServiceCertificates.Add(new X509Certificate2("Sustainsys.Saml2.Tests.pfx"));
-
-        // Add an identity provider.
-        opt.IdentityProviders.Add(new IdentityProvider(
-            // The identityprovider's entity id.
-            new EntityId("https://stubidp.sustainsys.com/Metadata"),
-            opt.SPOptions)
-        {
-            // Load config parameters from metadata, using the Entity Id as the metadata address.
-            LoadMetadata = true
-        });
+        // Load config parameters from metadata, using the Entity Id as the metadata address.
+        LoadMetadata = true
     });
+});
 
 var app = builder.Build();
 
