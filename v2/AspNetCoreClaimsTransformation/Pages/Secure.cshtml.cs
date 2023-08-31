@@ -4,21 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 
-namespace AspNetCoreClaimsTransformation.Pages
+namespace AspNetCoreClaimsTransformation.Pages;
+
+[Authorize]
+public class SecureModel : PageModel
 {
-    [Authorize]
-    public class SecureModel : PageModel
+    public IDictionary<string, string?> Properties { get; set; } = default!;
+
+    public IEnumerable<Claim> Claims { get; set; } = default!;
+
+    public async Task OnGet()
     {
-        public IDictionary<string, string?> Properties { get; set; } = default!;
+        var authResult = await HttpContext.AuthenticateAsync();
 
-        public IEnumerable<Claim> Claims { get; set; } = default!;
-
-        public async Task OnGet()
-        {
-            var authResult = await HttpContext.AuthenticateAsync();
-
-            Properties = authResult.Properties!.Items;
-            Claims = authResult.Principal!.Claims;
-        }
+        Properties = authResult.Properties!.Items;
+        Claims = authResult.Principal!.Claims;
     }
 }
