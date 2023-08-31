@@ -21,7 +21,7 @@ builder.Services.AddAuthentication(opt =>
 .AddSaml2(opt =>
 {
     // Set up our EntityId, this is our application.
-    opt.SPOptions.EntityId = new EntityId("https://localhost:7196/Saml2");
+    opt.SPOptions.EntityId = new EntityId("https://localhost:5001/Saml2");
 
     // Single logout messages should be signed according to the SAML2 standard, so we need
     // to add a certificate for our app to sign logout messages with to enable logout functionality.
