@@ -16,7 +16,10 @@ public class LogoutModel : PageModel
         };
 
         // On application initiated signout, it's the application's responsibility
-        // to both terminate the local session and issue a remote signout.
-        return SignOut(props, Saml2Defaults.Scheme, "cookie");
+        // to both terminate the local session and issue a remote signout. Always
+        // put the cookie scheme first as that requires headers to be written. If the
+        // Saml2 logout uses POST binding it will write the body and flush the headers,
+        // causing an exception when the cookie handler tries to write headers.
+        return SignOut(props, "cookie", Saml2Defaults.Scheme);
     }
 }
