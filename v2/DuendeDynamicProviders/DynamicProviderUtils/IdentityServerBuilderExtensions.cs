@@ -30,8 +30,8 @@ public static class IdentityServerBuilderExtensions
 
         builder.Services.AddSingleton<IConfigureOptions<Saml2Options>, Saml2ConfigureOptions>();
 
-        // these are services from ASP.NET Core and are added manually since we're not using the 
-        // AddOpenIdConnect helper that we'd normally use statically on the AddAuthentication.
+        // These services are normally registered when AddAuthentication().AddSaml2() is called. But when using dynamic providers
+        // we don't call AddSaml() so we have to ensure the services are registered.
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<Saml2Options>, PostConfigureSaml2Options>());
         builder.Services.TryAddTransient<Saml2Handler>();
 
